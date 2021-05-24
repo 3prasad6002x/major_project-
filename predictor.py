@@ -3,6 +3,8 @@ import h5py
 import numpy as np
 import mahotas
 import joblib
+from picamera import PiCamera
+from time import sleep
 print(joblib.__version__)
 from joblib import load
 from matplotlib.colors import hsv_to_rgb
@@ -31,7 +33,15 @@ def fd_histogram(image, mask=None): # colour histogram
     return hist.flatten()
 
 import matplotlib.pyplot as plt
-image=cv2.imread("C:\\Users\\saipr\\Videos\\plant_disease_detection\\dataset\\train\\Corn___Cercospora_leaf_spot Gray_leaf_spot\\image (12).JPG")
+import cv2
+camera=PiCamera()
+camera.resolution=(800,600)
+camera.start_preview() # capture the image
+camera.brightness=70
+sleep(10)
+camera.capture("/home/pi/Downloads/plant-disease-detection21.jpg")
+camera.stop_preview()
+image=cv2.imread("/home/pi/Downloads/plant-disease-detection21.jpg")
 image = cv2.resize(image, fixed_size)
 c=0
 disease_name_dict={}
