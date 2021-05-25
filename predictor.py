@@ -41,6 +41,13 @@ camera.brightness=70
 sleep(10)
 camera.capture("/home/pi/Downloads/plant-disease-detection21.jpg")
 camera.stop_preview()
+
+dir="C:\\Users\\saipr\\Videos\\plant_disease_detection\\dataset\\train\\"
+disease_name="Apple___healthy"
+image_name="\\image (998).JPG"
+file_name=dir+disease_name+image_name
+print(file_name)
+image=cv2.imread(file_name)
 image=cv2.imread("/home/pi/Downloads/plant-disease-detection21.jpg")
 image = cv2.resize(image, fixed_size)
 c=0
@@ -81,15 +88,15 @@ for key,value in disease_name_dict.items():
         print(key) 
 
 print(disease_name_dict)
-plt.figure(figsize=(9,8))
-plt.subplot(1,3,1)
-plt.imshow(rgb_img)
-plt.title("original")
-plt.subplot(1,3,2)
-plt.imshow(final_mask,cmap="gray")
-plt.title("processing")
-plt.subplot(1,3,3)
-plt.imshow(final_result)
-plt.title("final")
+fig,(ax1,ax2,ax3)=plt.subplots(ncols=3,nrows=1,figsize=(9,8))
+
+ax1.imshow(rgb_img)
+ax1.set_title("original")
+ax2.imshow(final_mask,cmap="gray")
+ax2.set_title("processing")
+ax3.imshow(final_result)
+ax3.set_title("final")
+fig.suptitle("\n \n \n input disease name is    '{}' \n    Random_forest_prediction is      '{}' \n     hist_gradient_boosting is       '{}'".format(disease_name,y,x))
+fig.tight_layout()
 plt.show()
 
