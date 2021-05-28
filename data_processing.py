@@ -11,7 +11,7 @@ h5_train_data          = 'C:\\Users\\saipr\\Videos\\plant_disease_detection\\out
 h5_train_labels        = 'C:\\Users\\saipr\\Videos\\plant_disease_detection\\output\\train_label.h5'
 images_per_class=800
 fixed_size=tuple((256,256))
-bins=8
+bins=10
 # images_per_class=1200
 train_labels = os.listdir(train_path)
 # sort the training labels
@@ -31,13 +31,21 @@ def img_seg(rgb_img,hsv_img): # Masking the image
     upper_green=np.array([100,255,255])
     healthy_mask=cv2.inRange(hsv_img,lower_green,upper_green)
     result=cv2.bitwise_and(rgb_img,rgb_img,mask=healthy_mask)
+
+    lower_yellow = np.array([80,100,100])
+    upper_yellow = np.array([100,255,255])
+    yellow_mask=cv2.inRange(hsv_img,lower_yellow,upper_yellow)
+    result_yellow=cv2.bitwise_and(rgb_img,rgb_img,mask=yellow_mask)
+
     lower_brown=np.array([10,0,10])
     upper_brown=np.array([30,255,255])
     disease_mask=cv2.inRange(hsv_img,lower_brown,upper_brown)
     disease_result=cv2.bitwise_and(rgb_img,rgb_img,mask=disease_mask)
-    final_mask=healthy_mask+disease_mask
+    
+    final_mask=healthy_mask+disease_mask+yellow_mask
     final_result=cv2.bitwise_and(rgb_img,rgb_img,mask=final_mask)
     return final_result
+
 def fd_hu_moments(image): #identifying the outline of the images
     image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
     feature = cv2.HuMoments(cv2.moments(image)).flatten()

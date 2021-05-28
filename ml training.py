@@ -19,16 +19,20 @@ h5f_label.close()
 
 print(type(global_features))
 
-from sklearn.experimental import enable_hist_gradient_boosting 
-from sklearn.ensemble import HistGradientBoostingClassifier
-hist_gradient_predictor=HistGradientBoostingClassifier(max_iter=750,learning_rate=0.1)
-hist_gradient_predictor.fit(np.array(global_features),np.array(global_labels))
-print("hist_gradient_predictor_training_completed.....")
+from sklearn.ensemble import GradientBoostingClassifier
+gradient_predictor=GradientBoostingClassifier(n_estimators=750,learning_rate=0.1)
+gradient_predictor.fit(np.array(global_features),np.array(global_labels))
+print("gradient_predictor_training_completed.....")
 
 from sklearn.ensemble import RandomForestClassifier
 random_forest_predictor=RandomForestClassifier(n_estimators=750,criterion='entropy',bootstrap=True,random_state=42)
 random_forest_predictor.fit(np.array(global_features),np.array(global_labels))
 print("random_forest_predictor_training_completed.....")
+from sklearn.experimental import enable_hist_gradient_boosting
+from sklearn.ensemble import HistGradientBoostingClassifier
+hist_gradient_predictor=HistGradientBoostingClassifier(max_iter=750,learning_rate=0.1)
+hist_gradient_predictor.fit(np.array(global_features),np.array(global_labels))
+print("hist_gradient_predictor_training_completed.....")
 
 
-dump([hist_gradient_predictor,random_forest_predictor],"model_predictor_saved.joblib",compress=1)
+dump([hist_gradient_predictor,random_forest_predictor,gradient_predictor],"model_predictor_saved.joblib",compress=1)
